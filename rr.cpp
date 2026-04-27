@@ -5,7 +5,6 @@ int main() {
     int n, quantum, i, j, temp;
     int current_time = 0, completed = 0, flag = 0;
     
-    // AT = Arrival Time, BT = Burst Time, RT = Remaining Time
     int PID[50], AT[50], BT[50], RT[50], CT[50], TAT[50], WT[50]; 
     float total_WT = 0.0, total_TAT = 0.0;
 
@@ -17,7 +16,6 @@ int main() {
     cout << "Enter Time Quantum: ";
     cin >> quantum;
 
-    // 1. Take Input
     for (i = 0; i < n; i++) {
         PID[i] = i + 1;
         cout << "\nProcess " << i + 1 << "\n";
@@ -26,11 +24,9 @@ int main() {
         cout << "Burst Time: ";
         cin >> BT[i];
         
-        // Initially, Remaining Time is equal to Burst Time
         RT[i] = BT[i]; 
     }
 
-    // 2. Sort processes by Arrival Time (Bubble Sort)
     for (i = 0; i < n - 1; i++) {
         for (j = 0; j < n - i - 1; j++) {
             if (AT[j] > AT[j + 1]) {
@@ -42,27 +38,22 @@ int main() {
         }
     }
 
-    // 3. Round Robin Scheduling Logic
     while (completed != n) {
-        flag = 0; // Reset flag for this cycle
+        flag = 0; 
 
         for (i = 0; i < n; i++) {
-            // Check if process has arrived AND still needs CPU time
             if (AT[i] <= current_time && RT[i] > 0) {
-                flag = 1; // A process was found and executed
+                flag = 1; 
 
                 if (RT[i] > quantum) {
-                    // Process runs for the full time quantum
                     current_time += quantum;
                     RT[i] -= quantum;
                 } else {
-                    // Process finishes its remaining execution
                     current_time += RT[i];
-                    CT[i] = current_time; // Completion time is recorded
-                    RT[i] = 0;            // Process is done
-                    completed++;          // Increase completed counter
+                    CT[i] = current_time; 
+                    RT[i] = 0;            
+                    completed++;          
 
-                    // Calculate TAT and WT for this finished process
                     TAT[i] = CT[i] - AT[i];
                     WT[i] = TAT[i] - BT[i];
                     
@@ -72,13 +63,11 @@ int main() {
             }
         }
 
-        // If no process was ready to execute, CPU sits idle, time moves forward
         if (flag == 0) {
             current_time++;
         }
     }
 
-    // 4. Output Results
     cout << "\nPID\tAT\tBT\tCT\tTAT\tWT\n";
     for (i = 0; i < n; i++) {
         cout << PID[i] << "\t"
