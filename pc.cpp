@@ -1,38 +1,37 @@
 #include <iostream>
 using namespace std;
 
-// 1. Define our Semaphores and Buffer limits
-int mutex = 1;         // Acts as a lock. 1 = unlocked, 0 = locked.
-int full_slots = 0;    // Number of slots in the buffer that currently have items.
-int empty_slots = 5;   // Number of empty slots (Maximum buffer capacity is 5).
-int item_count = 0;    // The actual item being produced/consumed.
+  
+int mutex = 1;        
+int full_slots = 0;   
+int empty_slots = 5;  
+int item_count = 0;  
 
-// 2. The Producer Function
 void producer() {
-    // Lock the buffer and decrease empty slots
+    
     --mutex;
     --empty_slots;
     
-    // Produce an item
+    
     item_count++;
     cout << "\n[+] Producer produced item: " << item_count;
     
-    // Unlock the buffer and increase full slots
+    
     ++mutex;
     ++full_slots;
 }
 
-// 3. The Consumer Function
+
 void consumer() {
-    // Lock the buffer and decrease full slots
+    
     --mutex;
     --full_slots;
     
-    // Consume an item
+   
     cout << "\n[-] Consumer consumed item: " << item_count;
     item_count--;
     
-    // Unlock the buffer and increase empty slots
+  
     ++mutex;
     ++empty_slots;
 }
@@ -52,7 +51,6 @@ int main() {
         
         switch (choice) {
             case 1:
-                // Producer can only run if the buffer is unlocked AND has empty space
                 if ((mutex == 1) && (empty_slots != 0)) {
                     producer();
                 } else {
@@ -61,7 +59,6 @@ int main() {
                 break;
                 
             case 2:
-                // Consumer can only run if the buffer is unlocked AND has items in it
                 if ((mutex == 1) && (full_slots != 0)) {
                     consumer();
                 } else {
