@@ -42,7 +42,7 @@ int main() {
 
     for (i = 1; i < n; i++) {
         if (CT[i - 1] < AT[i]) {
-            CT[i] = AT[i] + BT[i];  // CPU idle
+            CT[i] = AT[i] + BT[i]; 
         } else {
             CT[i] = CT[i - 1] + BT[i];
         }
